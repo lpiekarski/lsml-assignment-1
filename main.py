@@ -2,7 +2,7 @@ import os.path
 
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
-from pyspark.sql.types import StructType, StructField, IntegerType
+from pyspark.sql.types import StructType, StructField, IntegerType, DoubleType
 from pyspark.sql import functions as F
 import sys
 
@@ -64,6 +64,7 @@ def main():
     input_file = sys.argv[2]
     output_file = sys.argv[3]
 
+    # .master("local[*]") \
     spark = SparkSession.builder \
         .master("spark://master:7077") \
         .config("spark.executor.memory", "4g") \
@@ -77,7 +78,7 @@ def main():
     schema = StructType([
         StructField("edge_1", IntegerType(), True),
         StructField("edge_2", IntegerType(), True),
-        StructField("length", IntegerType(), True)
+        StructField("length", DoubleType(), True)
     ])
 
     edges = spark.read.csv(input_file, schema=schema, header=True)
