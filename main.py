@@ -65,15 +65,15 @@ def main():
     output_file = sys.argv[3]
 
     # .master("local[*]") \
+    #    .config("spark.executor.memory", "4g") \
+    #    .config("spark.driver.memory", "1g") \
     spark = SparkSession.builder \
         .master("spark://master:7077") \
-        .config("spark.executor.memory", "4g") \
-        .config("spark.driver.memory", "1g") \
         .appName("ShortestPath") \
         .getOrCreate()
 
     #spark.sparkContext.setLogLevel("DEBUG")
-    spark.sparkContext.setCheckpointDir('./tmp')
+    spark.sparkContext.setCheckpointDir('hdfs://master:9000/test')
 
     schema = StructType([
         StructField("edge_1", IntegerType(), True),
